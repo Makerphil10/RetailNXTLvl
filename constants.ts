@@ -1,12 +1,4 @@
 import { ServiceItem } from './types';
-import { 
-  Gamepad2, 
-  Store, 
-  TrendingUp, 
-  Users, 
-  BrainCircuit, 
-  Smartphone 
-} from 'lucide-react';
 
 export const APP_NAME = "Retail Next Level";
 

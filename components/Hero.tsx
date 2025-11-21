@@ -91,7 +91,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                    </div>
                    <div className="absolute bottom-20 left-0 bg-black/80 border border-white/20 p-2 font-mono-tech text-xs text-white backdrop-blur-md flex gap-2 items-center shadow-lg">
                        <Activity className="w-3 h-3 text-green-400" />
-                       > PLAY_MODE
+                       {'> PLAY_MODE'}
                    </div>
                </div>
           </div>

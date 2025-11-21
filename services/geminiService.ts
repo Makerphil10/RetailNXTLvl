@@ -2,9 +2,9 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { GamificationIdea } from "../types";
 
 const getClient = () => {
-  const apiKey = process.env.API_KEY;
+  const apiKey = import.meta.env.VITE_API_KEY as string | undefined;
   if (!apiKey) {
-    throw new Error("API Key not found. Please check your environment configuration.");
+    throw new Error("API Key not found. Please set VITE_API_KEY in your environment.");
   }
   return new GoogleGenAI({ apiKey });
 };

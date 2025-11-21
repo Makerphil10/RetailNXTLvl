@@ -61,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           
           {/* Mobile Nav - Minimal */}
           <div className="md:hidden flex space-x-4 pr-2">
-            <span className="font-mono-tech text-cyan-400 text-xs animate-pulse">>> MENU</span>
+            <span className="font-mono-tech text-cyan-400 text-xs animate-pulse">{'>> MENU'}</span>
           </div>
         </div>
       </div>
