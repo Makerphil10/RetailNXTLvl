@@ -4,18 +4,18 @@ export const APP_NAME = "Retail Next Level";
 
 export const SERVICES: ServiceItem[] = [
   {
-    title: "Retail Space Gamification",
-    description: "Transforming physical store layouts into immersive, game-like environments that encourage exploration.",
+    title: "RETAIL SPACE GAMIFICATION",
+    description: "Transforming physical stores into immersive environments that encourage exploration.",
     icon: "Store"
   },
   {
-    title: "Loyalty Program 2.0",
+    title: "LOYALTY & ENGAGEMENT LOOPS",
     description: "Moving beyond points. We design achievement-based systems that reward engagement, not just spending.",
     icon: "Gamepad2"
   },
   {
-    title: "AR & Phygital Experiences",
-    description: "Bridging the gap between digital and physical retail with Augmented Reality scavenger hunts and interactions.",
+    title: "PHYGITAL INTEGRATION",
+    description: "Experience over Transaction. Entwicklung von 'High-Touch'-Flächen wie Maker Labs oder Test-Zonen. Orte, an denen Kunden die Marke physisch erleben und ausprobieren können, statt nur ins Regal zu greifen.",
     icon: "Smartphone"
   },
   {
