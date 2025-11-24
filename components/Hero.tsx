@@ -69,12 +69,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                    
                    {/* Center Content */}
                    <div className="absolute inset-4 flex items-center justify-center">
-                        <div className="w-full h-full bg-black border border-cyan-400/30 rounded-full overflow-hidden relative shadow-[0_0_50px_rgba(103,232,249,0.15)] group">
-                            <img 
-                                src="https://picsum.photos/seed/retail/600/600?grayscale" 
-                                className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500 mix-blend-screen scale-110"
-                                alt="Cyber Retail"
-                            />
+                        <div className="w-full h-full bg-gradient-to-br from-cyan-900/30 via-black to-blue-900/30 border border-cyan-400/30 rounded-full overflow-hidden relative shadow-[0_0_50px_rgba(103,232,249,0.15)] group">
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                             
                             {/* Planet Overlay */}
