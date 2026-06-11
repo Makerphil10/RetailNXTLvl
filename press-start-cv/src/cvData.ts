@@ -46,6 +46,7 @@ export const PLAYER = {
   phone: '+49 177 4333 272',
   linkedin: 'https://www.linkedin.com/in/philipp-gebhardt',
   classicCvUrl: 'https://philgebhardtcv.netlify.app',
+  cvPdfUrl: 'https://philgebhardtcv.netlify.app/docs/CV_Philipp_Gebhardt_2026.pdf',
   languages: [
     { name: 'German', level: 'Native' },
     { name: 'English', level: 'Fluent (C1)' },

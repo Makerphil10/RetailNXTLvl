@@ -59,8 +59,11 @@ export default function TitleScreen({ onStart, onClassic }: Props) {
           ▶ Start Game
         </button>
         <button className="pixel-btn" onClick={onClassic}>
-          📄 Classic CV (no gameplay)
+          🕹️ Classic CV (no gameplay)
         </button>
+        <a className="pixel-btn" href={PLAYER.cvPdfUrl} target="_blank" rel="noreferrer">
+          📄 CV as PDF (no clicking at all)
+        </a>
       </div>
 
       <div className="title-press blink">PRESS ENTER TO START</div>

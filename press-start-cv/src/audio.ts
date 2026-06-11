@@ -56,11 +56,12 @@ export const sfx = {
 };
 
 /* ---------- background music ----------
- * A gentle 8-second chiptune loop (A minor), generated live —
- * no audio files needed. Kept quiet on purpose.
+ * A quiet punk-flavored chiptune loop (A minor), generated live —
+ * no audio files needed. Drums + driving eighth-note bass keep it
+ * rocking, low volumes keep it unobtrusive.
  */
 
-const STEP = 0.25; // seconds per 8th note
+const STEP = 0.22; // seconds per 8th note (~136 BPM)
 const R = 0; // rest
 
 // 4 bars of melody, 8 steps each (frequencies in Hz)
@@ -71,11 +72,12 @@ const MELODY = [
   494, R, 587, 392, R, 494, 392, R,
 ];
 
-// one bass note per half bar
-const BASS = [110, 110, 87.3, 87.3, 130.8, 130.8, 98, 98];
+// bar roots for the driving eighth-note bass: Am, F, C, G
+const BASS_ROOTS = [110, 87.3, 130.8, 98];
 
 let musicGain: GainNode | null = null;
 let musicTimer: number | null = null;
+let noiseBuffer: AudioBuffer | null = null;
 
 function scheduleNote(freq: number, when: number, duration: number, type: OscillatorType, volume: number) {
   const ac = getCtx();
@@ -92,13 +94,58 @@ function scheduleNote(freq: number, when: number, duration: number, type: Oscill
   osc.stop(when + duration);
 }
 
+/** Kick drum: a quick sine pitch drop. */
+function scheduleKick(when: number) {
+  const ac = getCtx();
+  if (!ac || !musicGain) return;
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(130, when);
+  osc.frequency.exponentialRampToValueAtTime(45, when + 0.1);
+  gain.gain.setValueAtTime(0.07, when);
+  gain.gain.exponentialRampToValueAtTime(0.001, when + 0.13);
+  osc.connect(gain).connect(musicGain);
+  osc.start(when);
+  osc.stop(when + 0.15);
+}
+
+/** Hi-hat / snare: filtered white noise burst. */
+function scheduleNoise(when: number, duration: number, volume: number, filterFreq: number) {
+  const ac = getCtx();
+  if (!ac || !musicGain) return;
+  if (!noiseBuffer) {
+    noiseBuffer = ac.createBuffer(1, ac.sampleRate * 0.25, ac.sampleRate);
+    const data = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+  }
+  const src = ac.createBufferSource();
+  src.buffer = noiseBuffer;
+  const filter = ac.createBiquadFilter();
+  filter.type = 'highpass';
+  filter.frequency.value = filterFreq;
+  const gain = ac.createGain();
+  gain.gain.setValueAtTime(volume, when);
+  gain.gain.exponentialRampToValueAtTime(0.001, when + duration);
+  src.connect(filter).connect(gain).connect(musicGain);
+  src.start(when);
+  src.stop(when + duration);
+}
+
 function scheduleLoop(startAt: number) {
+  // lead (quiet square — chiptune guitar)
   MELODY.forEach((freq, i) => {
-    if (freq !== R) scheduleNote(freq, startAt + i * STEP, STEP * 1.8, 'triangle', 0.06);
+    if (freq !== R) scheduleNote(freq, startAt + i * STEP, STEP * 1.6, 'square', 0.02);
   });
-  BASS.forEach((freq, i) => {
-    scheduleNote(freq, startAt + i * 4 * STEP, STEP * 3.6, 'square', 0.025);
-  });
+  for (let i = 0; i < 32; i++) {
+    const t = startAt + i * STEP;
+    // driving palm-muted eighth-note bass on the bar root
+    scheduleNote(BASS_ROOTS[Math.floor(i / 8)], t, STEP * 0.85, 'square', 0.014);
+    // kick on the beats, hat on the off-beats, snare on 2 and 4
+    if (i % 2 === 0) scheduleKick(t);
+    else scheduleNoise(t, 0.04, 0.012, 6000);
+    if (i % 8 === 4) scheduleNoise(t, 0.09, 0.025, 1800);
+  }
   const loopLength = MELODY.length * STEP;
   const ac = getCtx();
   if (!ac) return;
