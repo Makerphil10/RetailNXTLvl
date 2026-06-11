@@ -4,23 +4,26 @@
  * box-shadow paints one square per pixel.
  */
 
-const SCALE = 4;
+const SCALE = 6;
 
 const PALETTE: Record<string, string> = {
-  h: '#3d2b1f', // hair
+  h: '#4a3526', // hair
+  g: '#5e4430', // hair highlight
   s: '#e8b88a', // skin
   e: '#1a1a1a', // eyes
   t: '#1f1f1f', // band shirt (punk rock approved)
   w: '#e8e8ff', // shirt print
   a: '#e8b88a', // arms
+  l: '#6b4a2a', // belt
   p: '#3a5fcd', // jeans
+  q: '#2e4ba6', // jeans shading
   b: '#222222', // boots
   x: '#ffd23f', // boot stripe
 };
 
 const FRAME_A = [
   '...hhhhhh...',
-  '..hhhhhhhh..',
+  '..hghhhhgh..',
   '..hssssssh..',
   '..ssessess..',
   '..ssssssss..',
@@ -28,10 +31,10 @@ const FRAME_A = [
   '..tttttttt..',
   '.atttttttta.',
   '.attwwwwtta.',
-  '.atttttttta.',
+  '.attwwwwtta.',
   '..tttttttt..',
-  '...pppppp...',
-  '...pp..pp...',
+  '...llllll...',
+  '...ppqqpp...',
   '...pp..pp...',
   '..xbb..bbx..',
   '..bbb..bbb..',
@@ -39,7 +42,7 @@ const FRAME_A = [
 
 const FRAME_B = [
   '...hhhhhh...',
-  '..hhhhhhhh..',
+  '..hghhhhgh..',
   '..hssssssh..',
   '..ssessess..',
   '..ssssssss..',
@@ -47,10 +50,10 @@ const FRAME_B = [
   '..tttttttt..',
   '.atttttttta.',
   '.attwwwwtta.',
-  '.atttttttta.',
+  '.attwwwwtta.',
   '..tttttttt..',
-  '...pppppp...',
-  '..pp....pp..',
+  '...llllll...',
+  '..ppqqqqpp..',
   '.pp......pp.',
   'xbb......bbx',
   'bbb......bbb',

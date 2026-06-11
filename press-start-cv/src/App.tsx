@@ -35,6 +35,9 @@ export default function App() {
   const [toastQueue, setToastQueue] = useState<string[]>([]);
   const [soundOn, setSoundOn] = useState(true);
   const toastTimer = useRef<number | null>(null);
+  // refs mirror the sets so unlock logic stays out of state updaters (StrictMode-safe)
+  const unlockedRef = useRef(unlocked);
+  const visitedRef = useRef(visited);
 
   useEffect(() => {
     setMuted(!soundOn);
@@ -53,7 +56,7 @@ export default function App() {
     toastTimer.current = window.setTimeout(() => {
       toastTimer.current = null;
       setToastQueue((q) => q.slice(1));
-    }, 2600);
+    }, 3200);
     return () => {
       if (toastTimer.current !== null) {
         clearTimeout(toastTimer.current);
@@ -63,30 +66,30 @@ export default function App() {
   }, [toastQueue]);
 
   const unlock = useCallback((ids: string[]) => {
-    setUnlocked((prev) => {
-      const fresh = ids.filter((id) => !prev.has(id));
-      if (fresh.length === 0) return prev;
-      sfx.unlock();
-      setToastQueue((q) => [...q, ...fresh]);
-      return new Set([...prev, ...fresh]);
-    });
+    const fresh = ids.filter((id) => !unlockedRef.current.has(id));
+    if (fresh.length === 0) return;
+    unlockedRef.current = new Set([...unlockedRef.current, ...fresh]);
+    setUnlocked(unlockedRef.current);
+    sfx.unlock();
+    setToastQueue((q) => [...q, ...fresh]);
   }, []);
 
   const handleInteract = useCallback(
     (station: CareerStation) => {
       sfx.open();
       setActiveStation(station);
-      setVisited((prev) => {
-        if (prev.has(station.id)) return prev;
-        const next = new Set([...prev, station.id]);
-        const ids = [station.achievementId, ...(BONUS_ACHIEVEMENTS[station.id] ?? [])];
-        if (next.size === STATIONS.length) ids.push('completionist');
-        unlock(ids);
-        return next;
-      });
+      if (visitedRef.current.has(station.id)) return;
+      visitedRef.current = new Set([...visitedRef.current, station.id]);
+      setVisited(visitedRef.current);
+      const ids = [station.achievementId, ...(BONUS_ACHIEVEMENTS[station.id] ?? [])];
+      if (visitedRef.current.size === STATIONS.length) ids.push('completionist');
+      unlock(ids);
     },
     [unlock],
   );
+
+  const handleFirstMove = useCallback(() => unlock(['first-steps']), [unlock]);
+  const handleLeftWall = useCallback(() => unlock(['wrong-way']), [unlock]);
 
   const handleStart = useCallback(() => {
     sfx.start();
@@ -124,6 +127,8 @@ export default function App() {
           visited={visited}
           paused={activeStation !== null || page !== null}
           onInteract={handleInteract}
+          onFirstMove={handleFirstMove}
+          onLeftWall={handleLeftWall}
         />
       </div>
 

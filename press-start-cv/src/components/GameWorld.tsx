@@ -8,15 +8,18 @@ interface Props {
   visited: Set<string>;
   paused: boolean;
   onInteract: (station: CareerStation) => void;
+  onFirstMove: () => void;
+  onLeftWall: () => void;
 }
 
 const START_X = 140;
-const FIRST_STATION_X = 620;
-const STATION_GAP = 780;
+const FIRST_STATION_X = 470;
+const STATION_GAP = 520;
 const SPEED = 300; // px per second
-const INTERACT_RANGE = 80;
+const INTERACT_RANGE = 90;
+const LEFT_WALL = 60;
 
-export default function GameWorld({ stations, visited, paused, onInteract }: Props) {
+export default function GameWorld({ stations, visited, paused, onInteract, onFirstMove, onLeftWall }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<HTMLDivElement>(null);
@@ -33,6 +36,12 @@ export default function GameWorld({ stations, visited, paused, onInteract }: Pro
   const [nearId, setNearId] = useState<string | null>(null);
   const [moved, setMoved] = useState(false);
   const nearIdRef = useRef<string | null>(null);
+  const firedMoveRef = useRef(false);
+  const firedWallRef = useRef(false);
+  const onFirstMoveRef = useRef(onFirstMove);
+  const onLeftWallRef = useRef(onLeftWall);
+  onFirstMoveRef.current = onFirstMove;
+  onLeftWallRef.current = onLeftWall;
   const isTouch = useMemo(
     () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches,
     [],
@@ -67,23 +76,34 @@ export default function GameWorld({ stations, visited, paused, onInteract }: Pro
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
 
+      let dir = 0;
       if (!pausedRef.current) {
-        let dir = 0;
         if (keys.current.left) dir -= 1;
         if (keys.current.right) dir += 1;
         if (dir !== 0) {
-          pos.current = Math.max(60, Math.min(maxX, pos.current + dir * SPEED * dt));
+          pos.current = Math.max(LEFT_WALL, Math.min(maxX, pos.current + dir * SPEED * dt));
           setMoved(true);
+          if (!firedMoveRef.current) {
+            firedMoveRef.current = true;
+            onFirstMoveRef.current();
+          }
+          if (!firedWallRef.current && dir < 0 && pos.current <= LEFT_WALL) {
+            firedWallRef.current = true;
+            onLeftWallRef.current();
+          }
           if (playerRef.current) {
             playerRef.current.classList.toggle('face-left', dir < 0);
           }
           // two-frame walk cycle tied to distance walked
-          const frame = Math.floor(pos.current / 26) % 2;
+          const frame = Math.floor(pos.current / 30) % 2;
           if (frame !== frameToggle && spriteRef.current) {
             frameToggle = frame;
             spriteRef.current.style.boxShadow = PLAYER_FRAMES[frame];
           }
         }
+      }
+      if (playerRef.current) {
+        playerRef.current.classList.toggle('walking', dir !== 0);
       }
 
       const viewportW = viewportRef.current?.clientWidth ?? 800;
@@ -230,7 +250,9 @@ export default function GameWorld({ stations, visited, paused, onInteract }: Pro
       {/* player (fixed to viewport, moved via transform) */}
       <div className="player" ref={playerRef}>
         <div className="player-inner">
-          <div className="px" ref={spriteRef} style={{ boxShadow: PLAYER_FRAMES[0] }} />
+          <div className="sprite-bob">
+            <div className="px" ref={spriteRef} style={{ boxShadow: PLAYER_FRAMES[0] }} />
+          </div>
         </div>
       </div>
 

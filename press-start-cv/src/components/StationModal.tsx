@@ -9,9 +9,10 @@ interface Props {
 }
 
 export default function StationModal({ station, onClose, onContact }: Props) {
+  // E toggles the quest log: the same key that opens it closes it again
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape' || e.key === 'e' || e.key === 'E') onClose();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);

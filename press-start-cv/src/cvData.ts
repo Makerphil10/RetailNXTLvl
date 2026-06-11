@@ -207,6 +207,18 @@ export const STATIONS: CareerStation[] = [
 
 export const ACHIEVEMENTS: Achievement[] = [
   {
+    id: 'first-steps',
+    icon: '👟',
+    title: 'Baby Steps',
+    description: 'You moved the character. Bold. Decisive. Exactly the proactive energy this CV promised.',
+  },
+  {
+    id: 'wrong-way',
+    icon: '🧭',
+    title: 'Market Research',
+    description: 'You walked left to check if the world ends there. It does. No stone left unturned — great instinct.',
+  },
+  {
     id: 'coin-op',
     icon: '🕹️',
     title: 'Coin-Op Origins',
