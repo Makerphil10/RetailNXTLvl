@@ -2,11 +2,13 @@ import { useEffect, useMemo } from 'react';
 import { PLAYER, TARGET } from '../cvData';
 
 interface Props {
+  hasProgress: boolean;
   onStart: () => void;
+  onNewGame: () => void;
   onClassic: () => void;
 }
 
-export default function TitleScreen({ onStart, onClassic }: Props) {
+export default function TitleScreen({ hasProgress, onStart, onNewGame, onClassic }: Props) {
   // Enter / Space / Gamepad-style start
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -56,8 +58,13 @@ export default function TitleScreen({ onStart, onClassic }: Props) {
 
       <div className="title-menu">
         <button className="pixel-btn primary" onClick={onStart}>
-          ▶ Start Game
+          ▶ {hasProgress ? 'Continue' : 'Start Game'}
         </button>
+        {hasProgress && (
+          <button className="pixel-btn" onClick={onNewGame}>
+            ✦ New Game (reset progress)
+          </button>
+        )}
         <button className="pixel-btn" onClick={onClassic}>
           🕹️ Classic CV (no gameplay)
         </button>

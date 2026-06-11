@@ -104,6 +104,18 @@ export default function App() {
     setStarted(true);
   }, []);
 
+  // wipe saved progress and start fresh
+  const handleNewGame = useCallback(() => {
+    localStorage.removeItem(STORAGE_KEY);
+    visitedRef.current = new Set();
+    unlockedRef.current = new Set();
+    setVisited(new Set());
+    setUnlocked(new Set());
+    setToastQueue([]);
+    sfx.start();
+    setStarted(true);
+  }, []);
+
   const togglePage = useCallback((next: PageId) => {
     sfx.blip();
     setPage((current) => (current === next ? null : next));
@@ -114,7 +126,12 @@ export default function App() {
   if (!started) {
     return (
       <div className="crt">
-        <TitleScreen onStart={handleStart} onClassic={() => { setStarted(true); setPage('classic'); }} />
+        <TitleScreen
+          hasProgress={visited.size > 0 || unlocked.size > 0}
+          onStart={handleStart}
+          onNewGame={handleNewGame}
+          onClassic={() => { setStarted(true); setPage('classic'); }}
+        />
       </div>
     );
   }
