@@ -5,7 +5,7 @@ import Hud from './components/Hud';
 import StationModal from './components/StationModal';
 import { AchievementsPage, CharacterPage, ClassicCvPage, ContactPage } from './components/Pages';
 import { ACHIEVEMENTS, BONUS_ACHIEVEMENTS, STATIONS, type CareerStation } from './cvData';
-import { setMuted, sfx } from './audio';
+import { setMuted, sfx, startMusic, stopMusic } from './audio';
 
 export type PageId = 'character' | 'achievements' | 'contact' | 'classic' | null;
 
@@ -34,6 +34,7 @@ export default function App() {
   const [unlocked, setUnlocked] = useState<Set<string>>(() => new Set(loadProgress().unlocked));
   const [toastQueue, setToastQueue] = useState<string[]>([]);
   const [soundOn, setSoundOn] = useState(true);
+  const [musicOn, setMusicOn] = useState(true);
   const toastTimer = useRef<number | null>(null);
   // refs mirror the sets so unlock logic stays out of state updaters (StrictMode-safe)
   const unlockedRef = useRef(unlocked);
@@ -42,6 +43,13 @@ export default function App() {
   useEffect(() => {
     setMuted(!soundOn);
   }, [soundOn]);
+
+  // background music runs while the game screen is active
+  useEffect(() => {
+    if (started && musicOn) startMusic();
+    else stopMusic();
+    return stopMusic;
+  }, [started, musicOn]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -121,6 +129,8 @@ export default function App() {
           onTogglePage={togglePage}
           soundOn={soundOn}
           onToggleSound={() => setSoundOn((s) => !s)}
+          musicOn={musicOn}
+          onToggleMusic={() => setMusicOn((m) => !m)}
         />
         <GameWorld
           stations={STATIONS}

@@ -199,7 +199,7 @@ export const STATIONS: CareerStation[] = [
       'Embedded teamwork with dev teams, partner studios, vendors & media — cross-functional is my main stat',
       'Fluent English, native German, Berlin-compatible, indie at heart',
     ],
-    loot: 'PRESS APPLY TO CONTINUE',
+    loot: 'NO FORMAL APPLICATION NEEDED — JUST SAY HI',
     achievementId: 'final-gate',
     isFinal: true,
   },

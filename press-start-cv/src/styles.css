@@ -317,37 +317,53 @@ a {
   border-top: 4px solid #4a4a8a;
 }
 
-.skyline {
+/* skyline buildings with lit windows (two parallax layers) */
+.bldg {
   position: absolute;
   bottom: 72px;
-  height: 230px;
-  left: 0;
-  width: 12000px;
-  background: repeating-linear-gradient(
-    to right,
-    transparent 0 40px,
-    #0d0d22 40px 120px,
-    transparent 120px 150px,
-    #101028 150px 260px,
-    transparent 260px 300px
-  );
-  opacity: 0.9;
+  image-rendering: pixelated;
 }
 
-.hills {
+.bldg.far {
+  background-color: #10102a;
+  background-image:
+    repeating-linear-gradient(to right, transparent 0 10px, rgba(255, 214, 130, 0.16) 10px 14px, transparent 14px 24px),
+    repeating-linear-gradient(to top, transparent 0 12px, rgba(255, 214, 130, 0.13) 12px 15px, transparent 15px 26px);
+  box-shadow: 0 0 0 2px #0a0a1e;
+}
+
+.bldg.near {
+  background-color: #181838;
+  background-image:
+    repeating-linear-gradient(to right, transparent 0 14px, rgba(150, 190, 255, 0.12) 14px 19px, transparent 19px 34px),
+    repeating-linear-gradient(to top, transparent 0 16px, rgba(150, 190, 255, 0.1) 16px 20px, transparent 20px 36px);
+  box-shadow: 0 0 0 3px #0d0d24;
+  border-top: 4px solid #232350;
+}
+
+.horizon-glow {
   position: absolute;
   bottom: 72px;
-  height: 115px;
-  left: 0;
-  width: 12000px;
-  background: repeating-linear-gradient(
-    to right,
-    transparent 0 60px,
-    #181834 60px 220px,
-    transparent 220px 280px
-  );
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  opacity: 0.8;
+  left: -2000px;
+  width: 14000px;
+  height: 130px;
+  background: linear-gradient(to top, rgba(122, 47, 143, 0.35), transparent);
+  pointer-events: none;
+}
+
+.moon {
+  position: absolute;
+  left: 72%;
+  top: 9%;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 30%, rgba(0, 0, 0, 0.12) 0 12px, transparent 13px),
+    radial-gradient(circle at 64% 58%, rgba(0, 0, 0, 0.1) 0 9px, transparent 10px),
+    radial-gradient(circle at 44% 72%, rgba(0, 0, 0, 0.09) 0 6px, transparent 7px),
+    radial-gradient(circle, #f4eecf 0 64%, #ddd3a8 64% 100%);
+  box-shadow: 0 0 50px 12px rgba(244, 238, 207, 0.18);
 }
 
 .stars {
@@ -409,6 +425,31 @@ a {
 .px {
   width: 6px;
   height: 6px;
+}
+
+/* terraced platforms (the career ladder) */
+.terrace {
+  position: absolute;
+  bottom: 72px;
+  background:
+    repeating-linear-gradient(to right, transparent 0 44px, rgba(0, 0, 0, 0.25) 44px 48px),
+    repeating-linear-gradient(to bottom, #262650 0 22px, #1d1d40 22px 26px);
+  border-top: 5px solid #4a4a8a;
+  border-left: 4px solid #34346a;
+  box-shadow: inset 0 -30px 40px rgba(0, 0, 0, 0.35);
+  z-index: 4;
+}
+
+/* stepping-stone crates */
+.crate {
+  position: absolute;
+  background:
+    linear-gradient(45deg, transparent 0 44%, #7a5a32 44% 56%, transparent 56% 100%),
+    linear-gradient(-45deg, transparent 0 44%, #7a5a32 44% 56%, transparent 56% 100%),
+    #5e4426;
+  border: 4px solid #7a5a32;
+  box-shadow: inset 0 0 0 3px #3f2d18, 4px 4px 0 rgba(0, 0, 0, 0.4);
+  z-index: 5;
 }
 
 /* station sign */

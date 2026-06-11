@@ -47,7 +47,7 @@ export default function StationModal({ station, onClose, onContact }: Props) {
           {station.isFinal ? (
             <>
               <a className="pixel-btn primary" href={mailto}>
-                ✉ Apply / Say Hi
+                ✉ Say Hi
               </a>
               <button className="pixel-btn" onClick={onContact}>
                 Contact Info

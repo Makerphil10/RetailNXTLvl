@@ -8,9 +8,20 @@ interface Props {
   onTogglePage: (page: PageId) => void;
   soundOn: boolean;
   onToggleSound: () => void;
+  musicOn: boolean;
+  onToggleMusic: () => void;
 }
 
-export default function Hud({ visitedCount, totalCount, page, onTogglePage, soundOn, onToggleSound }: Props) {
+export default function Hud({
+  visitedCount,
+  totalCount,
+  page,
+  onTogglePage,
+  soundOn,
+  onToggleSound,
+  musicOn,
+  onToggleMusic,
+}: Props) {
   const pct = Math.round((visitedCount / totalCount) * 100);
   return (
     <header className="hud">
@@ -36,7 +47,10 @@ export default function Hud({ visitedCount, totalCount, page, onTogglePage, soun
         <button className={`hud-btn${page === 'classic' ? ' active' : ''}`} onClick={() => onTogglePage('classic')}>
           CLASSIC CV
         </button>
-        <button className="hud-btn" onClick={onToggleSound} aria-label="Toggle sound">
+        <button className={`hud-btn${musicOn ? ' active' : ''}`} onClick={onToggleMusic} aria-label="Toggle music">
+          ♪
+        </button>
+        <button className="hud-btn" onClick={onToggleSound} aria-label="Toggle sound effects">
           {soundOn ? '🔊' : '🔇'}
         </button>
       </nav>
