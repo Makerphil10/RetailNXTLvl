@@ -5,4 +5,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   base: './',
+  css: {
+    // inline config stops Vite from picking up the parent repo's postcss.config.js
+    postcss: { plugins: [] },
+  },
 });
